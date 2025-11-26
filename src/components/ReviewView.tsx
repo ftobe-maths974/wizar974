@@ -1,7 +1,6 @@
-import React from 'react';
 import { useWizardStore } from '../store/wizardStore';
 import { exportToKahootExcel } from '../lib/kahoot-exporter';
-import { Download, ArrowLeft, CheckCircle, Clock } from 'lucide-react';
+import { Download, ArrowLeft, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 
 export const ReviewView = () => {
   const { quizData, setStep, reset } = useWizardStore();
@@ -34,40 +33,55 @@ export const ReviewView = () => {
 
         {/* Liste des cartes Questions */}
         <div className="grid gap-6">
-          {quizData.map((q, i) => (
-            <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition">
-              <div className="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
-                <h3 className="font-bold text-lg text-slate-700">Question {i + 1}</h3>
-                <div className="flex items-center text-sm text-slate-500 bg-white px-3 py-1 rounded-full border">
-                  <Clock className="w-4 h-4 mr-1" /> {q.TimeLimit} sec
+          {quizData.map((q, i) => {
+            // SÉCURITÉ ANTI-CRASH
+            // On s'assure que CorrectAnswer est toujours une chaine de caractères
+            const safeCorrectAnswer = (q.CorrectAnswer || "").toString(); 
+            const correctIds = safeCorrectAnswer.split(',').map(s => s.trim());
+
+            return (
+              <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition">
+                <div className="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
+                  <h3 className="font-bold text-lg text-slate-700">Question {i + 1}</h3>
+                  <div className="flex items-center text-sm text-slate-500 bg-white px-3 py-1 rounded-full border">
+                    <Clock className="w-4 h-4 mr-1" /> {q.TimeLimit || 20} sec
+                  </div>
                 </div>
-              </div>
-              
-              <div className="p-6">
-                <p className="text-xl font-medium text-slate-800 mb-6">{q.Question}</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {/* On génère les 4 réponses */}
-                  {[q.Answer1, q.Answer2, q.Answer3, q.Answer4].map((ans, idx) => {
-                    const answerIndex = (idx + 1).toString();
-                    // Vérifie si c'est une bonne réponse (gère "1" et "1,3")
-                    const isCorrect = q.CorrectAnswer.split(',').map(s => s.trim()).includes(answerIndex);
-                    
-                    return (
-                      <div key={idx} className={`p-4 rounded-lg border-2 flex items-center justify-between ${
-                        isCorrect 
-                          ? 'border-green-500 bg-green-50 text-green-900' 
-                          : 'border-slate-100 bg-slate-50 text-slate-500'
-                      }`}>
-                        <span className="font-medium">{ans}</span>
-                        {isCorrect && <CheckCircle className="w-5 h-5 text-green-600" />}
-                      </div>
-                    );
-                  })}
+                <div className="p-6">
+                  <p className="text-xl font-medium text-slate-800 mb-6">{q.Question || "Question manquante"}</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* On génère les 4 réponses */}
+                    {[q.Answer1, q.Answer2, q.Answer3, q.Answer4].map((ans, idx) => {
+                      const answerIndex = (idx + 1).toString();
+                      // Vérifie si c'est une bonne réponse
+                      const isCorrect = correctIds.includes(answerIndex);
+                      
+                      return (
+                        <div key={idx} className={`p-4 rounded-lg border-2 flex items-center justify-between ${
+                          isCorrect 
+                            ? 'border-green-500 bg-green-50 text-green-900' 
+                            : 'border-slate-100 bg-slate-50 text-slate-500'
+                        }`}>
+                          <span className="font-medium">{ans || <span className="text-slate-300 italic">Vide</span>}</span>
+                          {isCorrect && <CheckCircle className="w-5 h-5 text-green-600" />}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Alerte si aucune réponse correcte détectée (bug IA) */}
+                  {correctIds.length === 0 || (correctIds.length === 1 && correctIds[0] === "") ? (
+                    <div className="mt-4 p-3 bg-yellow-50 text-yellow-700 rounded-lg flex items-center text-sm">
+                      <AlertTriangle className="w-4 h-4 mr-2" /> 
+                      Attention : L'IA n'a pas précisé la bonne réponse pour cette question.
+                    </div>
+                  ) : null}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

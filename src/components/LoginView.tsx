@@ -10,7 +10,7 @@ export const LoginView = () => {
     e.preventDefault();
     if (localCode.trim()) {
       setAccessCode(localCode);
-      setStep('chat');
+      setStep('source');
     }
   };
 

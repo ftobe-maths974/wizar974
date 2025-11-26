@@ -1,19 +1,34 @@
-// src/types.ts
-
 export interface KahootQuestion {
-  Question: string;        // Max 120 chars
-  Answer1: string;         // Max 75 chars
+  Question: string;
+  Answer1: string;
   Answer2: string;
   Answer3: string;
   Answer4: string;
-  TimeLimit: number;       // 5, 10, 20, 30, 60, 90, 120, 240
-  CorrectAnswer: string;   // Ex: "1" ou "2,3"
+  TimeLimit: number;
+  CorrectAnswer: string;
 }
 
-// C'est cette partie qui manquait probablement :
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system'; // Ajout de 'system' pour la compatibilité
   content: string;
 }
 
-export type WizardStep = 'login' | 'chat' | 'review';
+export type WizardStep = 'login' | 'source' | 'chat' | 'review';
+
+// --- LA NOUVELLE STRUCTURE PIVOT ---
+export interface QuizSettings {
+  // 1. Contexte
+  subject: string;
+  level: string;
+  topic: string;
+
+  // 2. Pédagogie
+  bloomLevel: string;
+  questionType: string;
+  distractorStrategy: string;
+
+  // 3. UX
+  difficulty: string;
+  tone: string;
+  language: string;
+}
