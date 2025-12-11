@@ -69,13 +69,6 @@ export const SourceView = () => {
                     <Select label="Difficulté" value={config.difficulty} options={DIFFICULTIES} onChange={(v: string) => update('difficulty', v)} />
                   </div>
               </Section>
-              <Section title="3. Expérience" icon={Sparkles} color="text-pink-600" bg="bg-pink-50">
-                <div className="grid grid-cols-3 gap-4">
-                  <Select label="Type Question" value={config.questionType} options={TYPES} onChange={v => update('questionType', v)} />
-                  <Select label="Ton" value={config.tone} options={TONES} onChange={v => update('tone', v)} />
-                  <Select label="Difficulté" value={config.difficulty} options={DIFFICULTIES} onChange={v => update('difficulty', v)} />
-                </div>
-              </Section>
             </div>
 ) : (
 <div className="h-full flex flex-col animate-in fade-in">
