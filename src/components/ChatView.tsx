@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useWizardStore } from '../store/wizardStore';
 import { sendMessageToAI } from '../lib/api';
 import ReactMarkdown from 'react-markdown';
-import { Send, Bot, User, Loader2, ArrowLeft } from 'lucide-react';
+import { Send, Bot, Loader2, ArrowLeft } from 'lucide-react';
 import { normalizeQuizData } from '../lib/quiz-parser'; // <--- AJOUT
 
 export const ChatView = () => {

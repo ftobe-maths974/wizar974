@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# 🧙‍♂️ Quiz Wizard (Wizar974)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Status](https://img.shields.io/badge/Status-Proof_of_Concept-orange)
+![Tech](https://img.shields.io/badge/Tech-React_|_Vite_|_Tailwind-blue)
 
-Currently, two official plugins are available:
+**Quiz Wizard** est une application web (Proof of Concept) permettant aux enseignants de générer automatiquement des quiz pédagogiques (compatibles Kahoot) grâce à l'intelligence artificielle.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+L'application agit comme un "Architecte Pédagogique", transformant une configuration (matière, niveau, objectif) ou un texte brut en un fichier Excel prêt à être importé dans Kahoot.
 
-## React Compiler
+🔗 **Démo en ligne :** [https://ftobe-maths974.github.io/wizar974/](https://ftobe-maths974.github.io/wizar974/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✨ Fonctionnalités Clés
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* **🛡️ Authentification Simple :** Accès sécurisé par un code unique.
+* **⚙️ Configurateur Pédagogique :** Définition précise du contexte (Niveau Bloom, Stratégie des distracteurs, Ton, Difficulté).
+* **📝 Mode Texte Source :** Génération de quiz à partir d'un cours copié-collé.
+* **🤖 Chat IA Interactif :** Dialogue avec l'IA pour affiner le quiz avant validation.
+* **Dg 📊 Parsing Intelligent :** Transformation automatique des réponses de l'IA (JSON) en données structurées.
+* **xk 📥 Export Kahoot :** Génération d'un fichier `.xlsx` formaté spécifiquement pour l'import Kahoot.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Stack Technique
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Ce projet est construit avec des technologies modernes pour assurer performance et maintenabilité :
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* **Core :** [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vitejs.dev/)
+* **State Management :** [Zustand](https://github.com/pmndrs/zustand) (avec persistance locale optimisée).
+* **Styling :** [Tailwind CSS](https://tailwindcss.com/) pour une UI responsive et propre.
+* **API & IA :** Appels vers un proxy PHP (`api.ts`) communiquant avec un LLM.
+* **Utilitaires :**
+    * `xlsx` : Pour la création des fichiers Excel.
+    * `react-markdown` : Pour le rendu des messages du chat.
+    * `lucide-react` : Pour l'iconographie.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## VX 📂 Structure du Projet
+
+L'architecture est organisée de manière modulaire dans le dossier `src/` :
+
+```text
+src/
+├── components/        # Vues principales de l'application
+│   ├── LoginView.tsx    # Écran de connexion
+│   ├── SourceView.tsx   # Choix du mode (Configurateur ou Texte)
+│   ├── ChatView.tsx     # Interface de discussion avec l'IA
+│   └── ReviewView.tsx   # Prévisualisation et export du quiz
+│
+├── lib/               # Logique métier et utilitaires
+│   ├── api.ts           # Gestion des appels API vers le proxy IA
+│   ├── prompts.ts       # "Prompt Engineering" : construction des instructions système
+│   ├── quiz-parser.ts   # Normalisation et nettoyage du JSON reçu de l'IA
+│   └── kahoot-exporter.ts # Génération du fichier Excel via SheetJS
+│
+├── store/             # Gestion d'état global
+│   └── wizardStore.ts   # Store Zustand (Step, User Data, Quiz Data)
+│
+├── types.ts           # Définitions TypeScript (Interfaces partagées)
+└── App.tsx            # Routeur logique (gestion des étapes)

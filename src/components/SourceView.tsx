@@ -48,22 +48,27 @@ export const SourceView = () => {
             <div className="space-y-8 animate-in fade-in">
               <Section title="1. Le Cadre" icon={BookOpen} color="text-blue-600" bg="bg-blue-50">
                 <div className="grid grid-cols-2 gap-4">
-                  <Select label="Matière" value={config.subject} options={SUBJECTS} onChange={v => update('subject', v)} />
-                  <Select label="Niveau" value={config.level} options={LEVELS} onChange={v => update('level', v)} />
-                </div>
+                <Select label="Matière" value={config.subject} options={SUBJECTS} onChange={(v: string) => update('subject', v)} />
+                <Select label="Niveau" value={config.level} options={LEVELS} onChange={(v: string) => update('level', v)} />
+              </div>
                 <div className="mt-4">
                   <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Sujet Précis</label>
                   <input className="w-full p-2.5 border border-slate-200 rounded-lg text-sm" placeholder="Ex: Pythagore" value={config.topic} onChange={e => update('topic', e.target.value)} />
                 </div>
               </Section>
-
               <Section title="2. Pédagogie" icon={Brain} color="text-purple-600" bg="bg-purple-50">
-                <div className="grid grid-cols-2 gap-4">
-                  <Select label="Niveau Cognitif" value={config.bloomLevel} options={BLOOMS} onChange={v => update('bloomLevel', v)} />
-                  <Select label="Stratégie Pièges" value={config.distractorStrategy} options={DISTRACTORS} onChange={v => update('distractorStrategy', v)} />
-                </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Select label="Niveau Cognitif" value={config.bloomLevel} options={BLOOMS} onChange={(v: string) => update('bloomLevel', v)} />
+                    <Select label="Stratégie Pièges" value={config.distractorStrategy} options={DISTRACTORS} onChange={(v: string) => update('distractorStrategy', v)} />
+                  </div>
               </Section>
-
+              <Section title="3. Expérience" icon={Sparkles} color="text-pink-600" bg="bg-pink-50">
+                  <div className="grid grid-cols-3 gap-4">
+                    <Select label="Type Question" value={config.questionType} options={TYPES} onChange={(v: string) => update('questionType', v)} />
+                    <Select label="Ton" value={config.tone} options={TONES} onChange={(v: string) => update('tone', v)} />
+                    <Select label="Difficulté" value={config.difficulty} options={DIFFICULTIES} onChange={(v: string) => update('difficulty', v)} />
+                  </div>
+              </Section>
               <Section title="3. Expérience" icon={Sparkles} color="text-pink-600" bg="bg-pink-50">
                 <div className="grid grid-cols-3 gap-4">
                   <Select label="Type Question" value={config.questionType} options={TYPES} onChange={v => update('questionType', v)} />
@@ -72,17 +77,17 @@ export const SourceView = () => {
                 </div>
               </Section>
             </div>
-          ) : (
-             <div className="h-full flex flex-col animate-in fade-in">
-                <textarea className="flex-1 w-full p-6 bg-slate-50 border border-slate-200 rounded-2xl resize-none h-96" placeholder="Collez ici le texte..." value={rawText} onChange={e => setRawText(e.target.value)} />
-             </div>
-          )}
+) : (
+<div className="h-full flex flex-col animate-in fade-in">
+  <textarea className="flex-1 w-full p-6 bg-slate-50 border border-slate-200 rounded-2xl resize-none h-96" placeholder="Collez ici le texte..." value={rawText} onChange={e => setRawText(e.target.value)} />
+</div>
+)}
 
-          <div className="mt-10 flex justify-end pt-6 border-t border-slate-100">
-            <button onClick={handleGo} disabled={mode === 'manual' && !config.topic} className="flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-black transition shadow-xl disabled:opacity-50">
-              Lancer l'Architecte <ArrowRight />
-            </button>
-          </div>
+<div className="mt-10 flex justify-end pt-6 border-t border-slate-100">
+<button onClick={handleGo} disabled={mode === 'manual' && !config.topic} className="flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-black transition shadow-xl disabled:opacity-50">
+Lancer l'Architecte <ArrowRight />
+</button>
+</div>
         </div>
       </div>
     </div>

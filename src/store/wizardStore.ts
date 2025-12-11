@@ -10,7 +10,7 @@ interface WizardState {
   accessCode: string;
   
   sourceType: SourceType;
-  sourceContent: QuizSettings | string; // <--- Le changement clé est ici
+  sourceContent: QuizSettings | string; 
   
   chatHistory: ChatMessage[];
   quizData: KahootQuestion[];
@@ -51,6 +51,20 @@ export const useWizardStore = create<WizardState>()(
       setStep: (s) => set({ step: s }),
       reset: () => set({ step: 'login', sourceType: null, sourceContent: '', chatHistory: [], quizData: [] })
     }),
-    { name: 'quiz-wizard-storage' }
+    { 
+      name: 'quiz-wizard-storage',
+      // CORRECTION ICI : Utilisation de partialize
+      partialize: (state) => ({
+        // On choisit explicitement ce qu'on veut garder en mémoire
+        accessCode: state.accessCode,
+        sourceType: state.sourceType,
+        sourceContent: state.sourceContent,
+        chatHistory: state.chatHistory,
+        quizData: state.quizData,
+        // On EXCLUT 'step' et 'isLoading'.
+        // Conséquence : Au rechargement (F5), 'step' redeviendra 'login' (la valeur par défaut),
+        // ce qui vous permettra de ressaisir le mot de passe.
+      })
+    }
   )
 );

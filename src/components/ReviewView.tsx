@@ -1,6 +1,6 @@
 import { useWizardStore } from '../store/wizardStore';
 import { exportToKahootExcel } from '../lib/kahoot-exporter';
-import { Download, ArrowLeft, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+import { Download, ArrowLeft, CheckCircle, Clock } from 'lucide-react';
 
 export const ReviewView = () => {
   const { quizData, setStep, reset } = useWizardStore();
